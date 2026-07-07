@@ -1,0 +1,289 @@
+/* ============================================================
+   Design tokens
+   Colour: paper #EDF1EF · ink #16241F · teal #0F6E5B (stable)
+           amber #C98A1F (warning) · rust #C1440E (critical)
+   Type: Fraunces (display, register headings) + IBM Plex Sans
+         (body/data — Devanagari companion for Hindi)
+   Signature: the "Facility Pulse" strip — an ECG-style trace per
+   centre, echoing a ward monitor rather than a generic dashboard tile.
+============================================================ */
+
+:root {
+  --paper: #EDF1EF;
+  --paper-raised: #F7F9F7;
+  --ink: #16241F;
+  --ink-soft: #4B5D56;
+  --line: #C7D0CA;
+  --teal: #0F6E5B;
+  --teal-deep: #0B4F42;
+  --amber: #C98A1F;
+  --rust: #C1440E;
+  --radius: 6px;
+  --shadow: 0 1px 2px rgba(22,36,31,0.06), 0 4px 14px rgba(22,36,31,0.05);
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "IBM Plex Sans", "IBM Plex Sans Devanagari", sans-serif;
+}
+
+html[lang="hi"] body { font-family: "IBM Plex Sans Devanagari", "IBM Plex Sans", sans-serif; }
+
+h2 {
+  font-family: "Fraunces", serif;
+  font-weight: 600;
+  font-size: 1.25rem;
+  margin: 0 0 4px;
+  letter-spacing: -0.01em;
+}
+
+.sub { color: var(--ink-soft); font-size: 0.88rem; margin: 0 0 14px; }
+.note { color: var(--ink-soft); font-size: 0.78rem; font-style: italic; margin: -6px 0 14px; }
+.muted { color: var(--ink-soft); font-weight: 400; font-size: 0.85rem; }
+.empty { color: var(--ink-soft); padding: 18px 0; }
+
+/* ---------- top bar ---------- */
+
+.topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 28px;
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--line);
+}
+
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark { flex-shrink: 0; }
+.brand-name { font-family: "Fraunces", serif; font-weight: 700; font-size: 1.4rem; letter-spacing: -0.01em; }
+.brand-tag { font-size: 0.78rem; color: var(--ink-soft); }
+
+.top-right { display: flex; align-items: center; gap: 16px; }
+.updated { font-size: 0.78rem; color: var(--ink-soft); }
+.lang-btn {
+  border: 1px solid var(--teal);
+  color: var(--teal-deep);
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.lang-btn:hover { background: var(--teal); color: #fff; }
+
+/* ---------- nav ---------- */
+
+.tabs {
+  display: flex;
+  gap: 2px;
+  padding: 0 24px;
+  background: var(--paper-raised);
+  border-bottom: 1px solid var(--line);
+  overflow-x: auto;
+}
+.nav-item {
+  border: none;
+  background: transparent;
+  padding: 12px 16px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  white-space: nowrap;
+}
+.nav-item.active { color: var(--teal-deep); border-bottom-color: var(--teal); font-weight: 600; }
+.nav-item:hover { color: var(--ink); }
+
+/* ---------- layout ---------- */
+
+.app-main { max-width: 1100px; margin: 0 auto; padding: 24px 20px 60px; }
+.panel {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 20px 22px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; }
+@media (max-width: 760px) { .two-col { grid-template-columns: 1fr; } }
+
+/* ---------- stat cards ---------- */
+
+.stat-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+@media (max-width: 760px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+.stat-card {
+  background: var(--paper-raised);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 16px 18px;
+  box-shadow: var(--shadow);
+}
+.stat-num { font-family: "Fraunces", serif; font-size: 2rem; font-weight: 600; color: var(--teal-deep); }
+.stat-alert .stat-num { color: var(--rust); }
+.stat-label { font-size: 0.8rem; color: var(--ink-soft); margin-top: 2px; }
+
+/* ---------- pulse strip (signature element) ---------- */
+
+.pulse-strip { display: flex; gap: 10px; overflow-x: auto; padding: 4px 0; }
+.pulse-unit {
+  flex: 0 0 150px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  padding: 10px 12px 8px;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.pulse-unit:hover { transform: translateY(-2px); }
+.pulse-svg { width: 100%; height: 24px; }
+.pulse-stable .pulse-svg path { stroke: var(--teal); }
+.pulse-warning .pulse-svg path { stroke: var(--amber); }
+.pulse-critical .pulse-svg path { stroke: var(--rust); animation: pulseBeat 1.4s ease-in-out infinite; }
+@keyframes pulseBeat { 0%, 100% { opacity: 1; } 50% { opacity: 0.35; } }
+.pulse-name { font-size: 0.82rem; font-weight: 600; margin-top: 6px; }
+.pulse-tag { font-size: 0.72rem; color: var(--ink-soft); }
+.pulse-critical .pulse-tag { color: var(--rust); font-weight: 600; }
+.pulse-warning .pulse-tag { color: var(--amber); font-weight: 600; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pulse-critical .pulse-svg path { animation: none; }
+}
+
+/* ---------- tables ---------- */
+
+.reg-table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+.reg-table th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--ink-soft);
+  font-size: 0.76rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  border-bottom: 1px solid var(--line);
+  padding: 8px 10px;
+}
+.reg-table td { padding: 10px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.reg-table tbody tr:last-child td { border-bottom: none; }
+.row-link { cursor: pointer; }
+.row-link:hover { background: rgba(15,110,91,0.05); }
+
+/* ---------- pills / chips ---------- */
+
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.76rem;
+  font-weight: 600;
+}
+.pill-ok { background: rgba(15,110,91,0.12); color: var(--teal-deep); }
+.pill-low { background: rgba(201,138,31,0.16); color: #8a611a; }
+.pill-out { background: rgba(193,68,14,0.14); color: var(--rust); }
+
+.chip {
+  display: inline-block;
+  background: rgba(193,68,14,0.1);
+  color: var(--rust);
+  border: 1px solid rgba(193,68,14,0.25);
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.76rem;
+  margin: 2px 6px 2px 0;
+}
+
+/* ---------- forms ---------- */
+
+.inline-form { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+.inline-form label { font-size: 0.82rem; color: var(--ink-soft); }
+input[type="number"], .select {
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  background: #fff;
+}
+.mini-input { width: 70px; }
+.select { min-width: 220px; }
+
+.btn {
+  background: var(--teal);
+  color: #fff;
+  border: none;
+  padding: 7px 16px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn:hover { background: var(--teal-deep); }
+.btn-sm {
+  background: transparent;
+  border: 1px solid var(--teal);
+  color: var(--teal-deep);
+  padding: 4px 12px;
+  border-radius: 4px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.btn-sm:hover { background: var(--teal); color: #fff; }
+.btn-sm:disabled { opacity: 0.55; cursor: default; }
+
+.badge {
+  display: inline-block;
+  border: 1px solid var(--line);
+  padding: 4px 10px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+}
+.centre-head { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+/* ---------- bed meter ---------- */
+
+.bed-meter { width: 100%; height: 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 100px; overflow: hidden; }
+.bed-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--amber) 70%, var(--rust)); }
+
+/* ---------- attendance dots ---------- */
+
+.week-dots { display: flex; gap: 4px; }
+.dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.dot-on { background: var(--teal); }
+.dot-off { background: var(--line); }
+
+/* ---------- flagged cards ---------- */
+
+.flag-card {
+  border: 1px solid var(--line);
+  border-left: 4px solid var(--rust);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 12px;
+  background: var(--paper);
+}
+.flag-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+.flag-reasons { margin-bottom: 10px; }
+.notify-btn { margin-top: 4px; }
+
+/* ---------- footer ---------- */
+
+.footer { text-align: center; color: var(--ink-soft); font-size: 0.78rem; padding: 20px 0 40px; }
+
+/* ---------- focus visibility ---------- */
+
+button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--teal-deep);
+  outline-offset: 2px;
+}

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SwasthyaNet — District Health Command Register</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans:ital@0;1&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">
+        <svg width="30" height="30" viewBox="0 0 30 30">
+          <path d="M15 3 L15 27 M3 15 L27 15" stroke="#0F6E5B" stroke-width="3" stroke-linecap="round"/>
+        </svg>
+      </div>
+      <div>
+        <div class="brand-name" id="appName">SwasthyaNet</div>
+        <div class="brand-tag" id="appTag">District Health Command Register</div>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="updated">
+        <span id="lastUpdatedLabel"></span>: <strong id="lastUpdatedVal"></strong>
+      </div>
+      <button class="lang-btn" id="langBtn" onclick="toggleLang()">हिं</button>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="nav-item" data-view="overview" data-i18n="navOverview" onclick="setView('overview')"></button>
+    <button class="nav-item" data-view="centre" data-i18n="navCenter" onclick="setView('centre')"></button>
+    <button class="nav-item" data-view="forecast" data-i18n="navForecast" onclick="setView('forecast')"></button>
+    <button class="nav-item" data-view="redistribute" data-i18n="navRedistribute" onclick="setView('redistribute')"></button>
+    <button class="nav-item" data-view="flagged" data-i18n="navFlagged" onclick="setView('flagged')"></button>
+  </nav>
+
+  <main id="app" class="app-main"></main>
+
+  <footer class="footer">
+    <span id="footerText"></span>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+  <script src="js/i18n.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/forecast.js"></script>
+  <script src="js/app.js"></script>
+  <script>
+    document.getElementById('footerText').textContent = t('footer');
+  </script>
+</body>
+</html>
